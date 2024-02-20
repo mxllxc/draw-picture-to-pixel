@@ -30,7 +30,7 @@ const Home: React.FC = () => {
             <Header />
             <div className="w-full flex justify-center py-6">
                 <div className="relative" ref={divRef}>
-                    <img className="opacity-50" src={img} alt="Imagem" />
+                    <img className="opacity-50 max-w-[90vw]" src={img} alt="Imagem" />
                     <div className="absolute top-0 border-white border flex flex-wrap w-full h-full" onClick={handleClick} />
                 </div>
             </div>
