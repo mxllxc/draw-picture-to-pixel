@@ -6,6 +6,7 @@ const Home: React.FC = () => {
     const { img } = useContext(AuthContext)
     const divRef = useRef<HTMLDivElement>(null);
     const [undoStack, setUndoStack] = useState<any[]>([]);
+    const [color, setColor] = useState<string>("white");
     const cellSize = 10; // Tamanho da célula
 
     const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -20,7 +21,7 @@ const Home: React.FC = () => {
             square.style.position = "absolute";
             square.style.width = `${cellSize}px`;
             square.style.height = `${cellSize}px`;
-            square.style.backgroundColor = "white"; // Cor do quadrado
+            square.style.backgroundColor = color; // Cor do quadrado
             square.style.left = col * cellSize + "px";
             square.style.top = row * cellSize + "px";
             divRef.current.appendChild(square);
@@ -54,6 +55,10 @@ const Home: React.FC = () => {
                             <div className="absolute top-0 border-white border flex flex-wrap w-full h-full" onClick={handleClick} />
                         </div>
                         <div className="flex flex-col gap-3">
+                            <div className="flex gap-2">
+                                <span>Escolha a cor:</span>
+                                <input onChange={(event) => setColor(event.target.value)} type="color" />
+                            </div>
                             <button className="btn btn-primary text-white" onClick={handleLimparQuadrados}>Limpar</button>
                             <button className="btn btn-primary text-white" onClick={handleUndo}>Desfazer</button>
                         </div>
