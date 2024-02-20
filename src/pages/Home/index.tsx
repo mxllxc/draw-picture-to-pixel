@@ -5,6 +5,7 @@ import { Header } from "../../components/header";
 const Home: React.FC = () => {
     const { img } = useContext(AuthContext)
     const divRef = useRef<HTMLDivElement>(null);
+    const [undoStack, setUndoStack] = useState<any[]>([]);
     const cellSize = 10; // Tamanho da célula
 
     const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -23,6 +24,8 @@ const Home: React.FC = () => {
             square.style.left = col * cellSize + "px";
             square.style.top = row * cellSize + "px";
             divRef.current.appendChild(square);
+
+            setUndoStack(prevStack => [...prevStack, square]);
         }
     };
 
@@ -30,6 +33,13 @@ const Home: React.FC = () => {
         if (divRef.current) {
             const squares = divRef.current.querySelectorAll(".square");
             squares.forEach(square => square.remove()); // Remove apenas os elementos com a classe "square"
+        }
+    };
+
+    const handleUndo = () => {
+        const lastAction = undoStack.pop(); // Retirar a última ação do stack
+        if (lastAction) {
+            lastAction.remove(); // Remover o elemento adicionado pela última ação
         }
     };
 
@@ -43,6 +53,7 @@ const Home: React.FC = () => {
                 </div>
                 <div className="flex flex-col gap-3">
                     <button className="btn btn-primary text-white" onClick={handleLimparQuadrados}>Limpar</button>
+                    <button className="btn btn-primary text-white" onClick={handleUndo}>Desfazer</button>
                 </div>
             </div>
         </div>
