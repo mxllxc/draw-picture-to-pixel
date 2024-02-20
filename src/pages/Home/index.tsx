@@ -47,14 +47,18 @@ const Home: React.FC = () => {
         <div>
             <Header />
             <div className="w-full justify-center py-6 flex flex-row gap-10">
-                <div className="relative" ref={divRef}>
-                    <img className="opacity-50 max-w-[90vw]" src={img} alt="Imagem" />
-                    <div className="absolute top-0 border-white border flex flex-wrap w-full h-full" onClick={handleClick} />
-                </div>
-                <div className="flex flex-col gap-3">
-                    <button className="btn btn-primary text-white" onClick={handleLimparQuadrados}>Limpar</button>
-                    <button className="btn btn-primary text-white" onClick={handleUndo}>Desfazer</button>
-                </div>
+                {img && (
+                    <>
+                        <div className="relative" ref={divRef}>
+                            <img className="opacity-50 max-w-[90vw]" src={img} alt="Imagem" />
+                            <div className="absolute top-0 border-white border flex flex-wrap w-full h-full" onClick={handleClick} />
+                        </div>
+                        <div className="flex flex-col gap-3">
+                            <button className="btn btn-primary text-white" onClick={handleLimparQuadrados}>Limpar</button>
+                            <button className="btn btn-primary text-white" onClick={handleUndo}>Desfazer</button>
+                        </div>
+                    </>
+                )}
             </div>
         </div>
     )
