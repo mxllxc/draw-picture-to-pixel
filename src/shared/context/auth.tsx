@@ -1,28 +1,22 @@
 import { createContext, useState } from "react";
-import { AuthState, User } from "../types";
+import { AuthState } from "../types";
 
 const defaultState: AuthState = {
-    singIn: (email: string) => {},
-    user: {
-        email: "email",
-        status: "INATIVO"
-    }
+    setImg: (img: any) => {},
+    img: null
 }
 
 export const AuthContext = createContext(defaultState)
 
 function AuthProvider({children}: any){
-    const [user, setUser] = useState<User>(defaultState.user)
+    const [img, setImgState] = useState(defaultState.img)
 
-    function singIn(email: string){
-        setUser({
-            email: email,
-            status: "ATIVO"
-        })
+    function setImg(img: any){
+        setImgState(img)
     }
 
     return(
-        <AuthContext.Provider value={{ singIn, user }}>
+        <AuthContext.Provider value={{ setImg, img }}>
             {children}
         </AuthContext.Provider>
     )

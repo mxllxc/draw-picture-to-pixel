@@ -9,15 +9,10 @@
 //================================================
 // Helpers
 
-export type User = {
-  email: string;
-  status: string
-}
-
 //================================================
 // State
 
 export type AuthState = {
-  singIn: (email: string) => void;
-  user: User
+  setImg: (email: any) => void;
+  img: any
 };
