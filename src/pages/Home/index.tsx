@@ -1,10 +1,12 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../shared/context/auth";
 import { Header } from "../../components/header";
+import domtoimage from 'dom-to-image';
 
 const Home: React.FC = () => {
     const { img } = useContext(AuthContext)
     const divRef = useRef<HTMLDivElement>(null);
+    const divRefExport = useRef<HTMLDivElement>(null);
     const cellSize = 10; // Tamanho da célula
 
     const [squares, setSquares] = useState<HTMLElement[]>([]);
@@ -100,6 +102,32 @@ const Home: React.FC = () => {
         }
     };
 
+    const handleExportDiv = () => {
+        if (divRef.current) {
+            const node = divRef.current;
+            const imageElement = node.querySelector('img'); // Seleciona o elemento de imagem dentro da div
+    
+            if (imageElement) {
+                imageElement.style.display = 'none'; // Oculta temporariamente o elemento de imagem
+            }
+    
+            domtoimage.toPng(node)
+                .then(function (dataUrl) {
+                    const link = document.createElement('a');
+                    link.href = dataUrl;
+                    link.download = 'imageToPixel.png';
+                    link.click();
+                    
+                    if (imageElement) {
+                        imageElement.style.display = ''; // Restaura a exibição do elemento de imagem
+                    }
+                })
+                .catch(function (error) {
+                    console.error('Error exporting div:', error);
+                });
+        }
+    };
+
     return (
         <div>
             <Header />
@@ -108,7 +136,7 @@ const Home: React.FC = () => {
                     <>
                         <div className="relative" ref={divRef}>
                             <img className="opacity-50 max-w-[80vw]" src={img} alt="Imagem" />
-                            <div className="absolute top-0 border-white border cursor-crosshair flex flex-wrap w-full h-full" onClick={(event) => {
+                            <div className="absolute top-0 border-white border cursor-crosshair flex flex-wrap w-full h-full" ref={divRefExport} onClick={(event) => {
                                 if(pencil) {
                                     handleClick(event)
                                 }
@@ -128,6 +156,7 @@ const Home: React.FC = () => {
                             <button className="btn btn-primary text-white" onClick={handleLimparQuadrados}>Limpar</button>
                             <button className="btn btn-primary text-white" onClick={handleUndo}>Desfazer</button>
                             <button className="btn btn-primary text-white" onClick={handleSetGrid}>Grid</button>
+                            <button className="btn btn-primary text-white" onClick={handleExportDiv}>Exportar</button>
                         </div>
                     </>
                 )}
