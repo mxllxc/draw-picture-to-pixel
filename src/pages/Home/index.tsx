@@ -10,6 +10,7 @@ const Home: React.FC = () => {
     const [squares, setSquares] = useState<HTMLElement[]>([]);
     const [color, setColor] = useState<string>("#fff");
     const [pencil, setPencil] = useState<boolean>(true);
+    const [isGridSet, setIsGridSet] = useState<boolean>(false);
 
     useEffect(() => {
         setSquares([]); // Limpa os quadrados quando a imagem é alterada
@@ -59,6 +60,46 @@ const Home: React.FC = () => {
         }
     };
 
+    const handleSetGrid = () => {
+        if (divRef.current) {
+            if (!isGridSet) {
+                const div = divRef.current;
+    
+                // Desenhar linhas horizontais
+                for (let y = 0; y < div.offsetHeight; y += cellSize) {
+                    const line = document.createElement("div");
+                    line.className = "grid-line"; // Adicione uma classe específica
+                    line.style.position = "absolute";
+                    line.style.left = "0";
+                    line.style.top = `${y}px`;
+                    line.style.width = "100%";
+                    line.style.height = "1px";
+                    line.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
+                    div.appendChild(line);
+                }
+    
+                // Desenhar linhas verticais
+                for (let x = 0; x < div.offsetWidth; x += cellSize) {
+                    const line = document.createElement("div");
+                    line.className = "grid-line"; // Adicione uma classe específica
+                    line.style.position = "absolute";
+                    line.style.left = `${x}px`;
+                    line.style.top = "0";
+                    line.style.width = "1px";
+                    line.style.height = "100%";
+                    line.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
+                    div.appendChild(line);
+                }
+                setIsGridSet(true);
+            } else {
+                // Remover apenas as linhas da grade
+                const gridLines = divRef.current.querySelectorAll(".grid-line");
+                gridLines.forEach(line => line.remove());
+                setIsGridSet(false);
+            }
+        }
+    };
+
     return (
         <div>
             <Header />
@@ -86,6 +127,7 @@ const Home: React.FC = () => {
                             </div>
                             <button className="btn btn-primary text-white" onClick={handleLimparQuadrados}>Limpar</button>
                             <button className="btn btn-primary text-white" onClick={handleUndo}>Desfazer</button>
+                            <button className="btn btn-primary text-white" onClick={handleSetGrid}>Grid</button>
                         </div>
                     </>
                 )}
